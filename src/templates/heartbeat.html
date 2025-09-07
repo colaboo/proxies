@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      // Send initial heartbeat immediately
+
+      async function sendHeartbeat() {
+          const res = await fetch('/proxy-heartbeat', {
+              method: 'POST',
+              credentials: 'include' // This ensures cookies are sent
+          });
+          if (res.status == 401) {
+              const refreshed = await refreshTokens();
+              if (refreshed) {
+                  return await sendHeartbeat(); // retry after refresh
+              } else {
+                  throw new Error("Token refresh failed");
+              }
+          }
+      }
+
+      async function refreshTokens() {
+          const refreshToken = getCookie("refresh_token");
+          const res = await fetch("https://securetoken.googleapis.com/v1/token?key=AIzaSyAxfFm_vWEz4_h3xOD9DApqRTdTjbq2crY", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/x-www-form-urlencoded"
+              },
+              body: new URLSearchParams({
+                  grant_type: "refresh_token",
+                  refresh_token: refreshToken
+              })
+          });
+          if (!res.ok) return false;
+          const data = await res.json();
+          document.cookie = `proxy_jwt=Bearer ${data.id_token}; path=/; domain=.yourdomain.com; secure; SameSite=None`;
+          document.cookie = `refresh_token=${data.refresh_token}; path=/; domain=.yourdomain.com; secure; SameSite=None`;
+          return true;
+      }
+
+      function getCookie(name) {
+          const value = `; ${document.cookie}`;
+          const parts = value.split(`; ${name}=`);
+          if (parts.length === 2) return parts.pop().split(';').shift();
+          return null;
+      }
+
+      // Send initial heartbeat immediately
+      (async () => {
+        try {
+          await sendHeartbeat();
+        } catch (error) {
+          console.error('Heartbeat failed:', error);
+        }
+      })();
+
+      // Continue sending every 15s
+      setInterval(async () => {
+        try {
+          await sendHeartbeat();
+        } catch (error) {
+          console.error('Heartbeat failed:', error);
+        }
+      }, 15000);
+
+      // Reload after 20s
+      setTimeout(() => {
+        location.reload();
+      }, 20000);
+    </script>
+  </head>
+  <body>
+    <h2>Setting up your session...</h2>
+    <p>This page will reload shortly to load the target content.</p>
+  </body>
+</html>

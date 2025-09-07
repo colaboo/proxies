@@ -25,14 +25,14 @@ from cache import AsyncTTL
 import cloudscraper
 
 
-from src.tools.proxy import inject_heartbeat
+from tools.proxy import inject_heartbeat
 
-from src.process_proxy.craftwork.login import login
-from src.process_proxy.tools import get_proxy_origin
+from process_proxy.craftwork.login import login
+from process_proxy.tools import get_proxy_origin
 
 
-# from src.tools.file import dump_to_file
-from src.core.configs import configs
+# from tools.file import dump_to_file
+from core.configs import configs
 
 
 scraper = cloudscraper.create_scraper()  #
@@ -343,7 +343,7 @@ async def proxy_call(
         raise HTTPException(403)
     if str(request.query_params):
         url = url + "?" + str(request.query_params)
-    url_full = "https://" + configs.TARGET_HOST + "/" + url
+    url_full = "https://craftwork.design/" + url
     if retarget:
         url_full = "https://" + retarget + "/" + url
     return await call(

@@ -1,0 +1,18 @@
+version: '3'
+
+tasks:
+  build:
+    cmds:
+      - docker build --platform linux/amd64 -t ghcr.io/colaboo/proxy_backend:latest .
+    aliases: [b]
+  push:
+    cmds:
+      - docker push ghcr.io/colaboo/proxy_backend:latest
+    aliases: [p]
+  build-push:
+    deps: [build, push]
+    aliases: [bp]
+  restart-deployment:
+    cmds:
+      - kubectl rollout restart deployment proxy-backend
+    aliases: [rd]

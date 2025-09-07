@@ -27,12 +27,12 @@ from cache import AsyncTTL
 import cloudscraper
 
 
-from src.tools.proxy import inject_heartbeat
+from tools.proxy import inject_heartbeat
 
-from src.process_proxy.iconly.login import login
+from process_proxy.iconly.login import login
 
-# from src.tools.file import dump_to_file
-from src.core.configs import configs
+# from tools.file import dump_to_file
+from core.configs import configs
 
 
 scraper = cloudscraper.create_scraper()  #
@@ -72,8 +72,9 @@ api_forbidden = {
 
 
 redis_app = Redis(
-    host="redis",
-    port=6379,
+    host=configs.REDIS_HOST,
+    port=configs.REDIS_PORT,
+    db=configs.REDIS_DB,
 )
 
 
@@ -377,7 +378,7 @@ async def proxy_call(
     if str(request.query_params):
         url = url + "?" + str(request.query_params)
 
-    url_full = "https://" + configs.TARGET_HOST + "/" + url
+    url_full = "https://iconly.pro/" + url
     url_full = url_full.replace('staticc', 'static')
     for page_url in ['web', 'prod']:
         if '/' + page_url in url_full:

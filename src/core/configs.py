@@ -8,16 +8,32 @@ from firebase_admin import credentials
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file="env.sh", env_file_encoding="utf-8")
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra='ignore')
 
     DEBUG: Optional[bool] = False
-
-    path_to_firebase_api: str
-    FIREBASE_API_KEY: str
+    LOG_LEVEL: str = "DEBUG"
+    LOG_FORMAT: str = "default"
+    AUTH_TYPE: str = "basic"
+    # PATH_TO_FIREBASE_API: str
+    # FIREBASE_API_KEY: str
     # url_base: str
     DOCS_URL: str = "/docs"
     API_V1_STR: str = "/api/v1"
-
+    TARGETS: list[str] = [
+        "craftwork",
+        "envato",
+        "flaticon",
+        "freepik",
+        "iconly",
+        "mobbin",
+        "refero",
+        "uxmovement"
+    ]
+    REDIS_HOST: str = "localhost"
+    REDIS_PORT: int = 6379
+    REDIS_DB: int = 0
+    # Название хедера в котором будет передаваться сайт на который нужно проксировать запрос (mobbin, refero, etc)
+    PROXY_HEADER_NAME: str = "X-Target-Site"
     # TODO: move to some more secure way in case of moving services to different machines
     SIMPLE_SERVER_AUTH_KEY: Optional[str] = (
         "KEYFORTEST"  # just a string shared between multiple servers to auth between server only requests
@@ -29,7 +45,8 @@ class Settings(BaseSettings):
         "https://localhost",
         "https://app.collaboo.co",
         "https://mobbin.collaboo.co",
-        "https://uxmovements.collaboo.co",
+        "https://uxmove.collaboo.co",
+        "https://elements.collaboo.co",
     ]
 
     CURRENT_HOST: str = "127.0.0.1:8881"
@@ -97,10 +114,10 @@ class Settings(BaseSettings):
 
 configs = Settings()
 
-firebase_cred = credentials.Certificate(
-    configs.path_to_firebase_api,
-)
-firebase_app = firebase_admin.initialize_app(firebase_cred)
+# firebase_cred = credentials.Certificate(
+#     configs.PATH_TO_FIREBASE_API,
+# )
+# firebase_app = firebase_admin.initialize_app(firebase_cred)
 
 tags_metadata = [
     {

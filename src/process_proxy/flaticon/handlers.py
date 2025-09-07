@@ -26,12 +26,12 @@ from cache import AsyncTTL
 import cloudscraper
 
 
-from src.tools.proxy import inject_heartbeat
+from tools.proxy import inject_heartbeat
 
-from src.process_proxy.flaticon.login import login
+from process_proxy.flaticon.login import login
 
-# from src.tools.file import dump_to_file
-from src.core.configs import configs
+# from tools.file import dump_to_file
+from core.configs import configs
 
 
 scraper = cloudscraper.create_scraper()  #

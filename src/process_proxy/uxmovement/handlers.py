@@ -25,12 +25,12 @@ from cache import AsyncTTL
 import cloudscraper
 
 
-from src.tools.proxy import inject_heartbeat
+from tools.proxy import inject_heartbeat
 
-from src.process_proxy.uxmovement.login import login
+from process_proxy.uxmovement.login import login
 
-# from src.tools.file import dump_to_file
-from src.core.configs import configs
+# from tools.file import dump_to_file
+from core.configs import configs
 
 
 scraper = cloudscraper.create_scraper()  #
@@ -183,12 +183,12 @@ async def proxy_request(
 
 retarget_targets = {
     # "substack.com": f"{configs.CURRENT_HOST}",
-    "uxmovement.substack.com": f"{configs.CURRENT_HOST}",
-    "substackcdn.com": f"{configs.CURRENT_HOST}",
-    "substack.com": f"nourl",
-    f"{configs.CURRENT_HOST}/bundle": f"{configs.CURRENT_HOST}/retarget/substackcdn.com%2Fbundle",
-    f"{configs.CURRENT_HOST}/image": f"{configs.CURRENT_HOST}/retarget/substackcdn.com%2Fimage",
-    f"{configs.CURRENT_HOST}/static": f"{configs.CURRENT_HOST}/retarget/substackcdn.com%2Fstatic",
+    "uxmovement.substack.com": "uxmove.collaboo.co",
+    "substackcdn.com": "uxmove.collaboo.co",
+    "substack.com": "nourl",
+    "uxmove.collaboo.co/bundle": "uxmove.collaboo.co/retarget/substackcdn.com%2Fbundle",
+    "uxmove.collaboo.co/image": "uxmove.collaboo.co/retarget/substackcdn.com%2Fimage",
+    "uxmove.collaboo.co/static": "uxmove.collaboo.co/retarget/substackcdn.com%2Fstatic",
 }
 
 
@@ -290,7 +290,7 @@ async def proxy_call(
         raise HTTPException(403)
     if str(request.query_params):
         url = url + "?" + str(request.query_params)
-    url_full = "https://" + configs.TARGET_HOST + "/" + url
+    url_full = "https://uxmovement.substack.com/" + url
     if retarget:
         url_full = "https://" + retarget + "/" + url
     return await call(

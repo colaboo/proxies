@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+        getIdToken,
+        signInWithCustomToken,
+      } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyAxfFm_vWEz4_h3xOD9DApqRTdTjbq2crY",
+        authDomain: "local-soulwi.firebaseapp.com",
+        projectId: "local-soulwi",
+        storageBucket: "local-soulwi.appspot.com",
+        messagingSenderId: "944388395479",
+        appId: "1:944388395479:web:b160914f7f0a09a2083b92",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      signInWithCustomToken(auth, "{token}")
+        .then((userCredential) => {
+          {
+            const user = userCredential.user;
+          }
+        })
+        .catch((error) => {
+          {
+            console.log(error);
+          }
+        });
+
+      setTimeout(() => {
+        {
+          document.location.href = "/";
+        }
+      }, 4000);
+    </script>
+    <h2>Setting up your session...</h2>
+    <p>This page will reload shortly to load the target content.</p>
+  </body>
+</html>

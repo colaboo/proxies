@@ -2,7 +2,7 @@ from functools import partial
 from typing import Any, TypeVar
 
 
-from src.core.configs import configs
+from core.configs import configs
 
 
 T = TypeVar("T")

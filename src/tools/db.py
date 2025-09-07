@@ -12,7 +12,7 @@ from asyncpg import (
 )
 
 # from fastapiplugins.utils import raise_exception
-from src.tools.exceptions import (
+from tools.exceptions import (
     get_exception_id,
     ExceptionMessage,
 )

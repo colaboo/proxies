@@ -3,8 +3,8 @@ import logging
 from curl_cffi import requests
 from fastapi import HTTPException
 import asyncio
-from src.process_proxy.mobbin.captcha import solve_captcha
-from src.process_proxy.mobbin.sse_decoder import parse_sse_response
+from process_proxy.mobbin.captcha import solve_captcha
+from process_proxy.mobbin.sse_decoder import parse_sse_response
 
 lock = False
 
@@ -23,11 +23,12 @@ async def load_cookies():
     return content
 
 async def login() -> dict[str, str]:
+    logging.info("Logging to mobbin.com")
     global lock
     if lock == True:
+        logging.info("Locked, skipping login")
         return {}
     lock = True
-    logging.info("Logging to mobbin.com")
     cookies_res = {}
 
     headers = {
@@ -58,25 +59,36 @@ async def login() -> dict[str, str]:
         'redirect_to': '/settings/account',
     }
 
-
+    data = '[{"email":"bj3000@mail.ru","password":"HjrR9aw8vH"}]'
+    captcha_found = False
     async with requests.AsyncSession() as s:
         response = await s.post('https://mobbin.com/login', params=params, cookies=cookies_res, headers=headers, data=data)
+        logging.info(f"Get response. Status code: {response.status_code}.")
         if response.text != "":
             events = parse_sse_response(response.text)
             for event in events:
                 if isinstance(event["data"], dict) and event["data"].get("rateLimited") != None:
+                    captcha_found = True
                     challenge = event['data']['rateLimited']['challenge']
                     challenge_url = f'https://mobbin.com/{challenge}'
-                    logging.info(f"Get captcha! Challenge: {challenge}.")
-                    cf_token = await solve_captcha("7d218cfd86add9e2befca4ada6475cc7", challenge_url)
+                    try:
+                        logging.info(f"Get cloudflare challenge: {challenge}.")
+                        cf_token = await solve_captcha("7d218cfd86add9e2befca4ada6475cc7", challenge_url)
+                        logging.info(f"Solved captcha. Cloudflare token: {cf_token}.")
+                    except Exception as e:
+                        lock = False
+                        raise
                     submit_payload = json.dumps([challenge, cf_token, "/"])
                     submit_resp = await s.post(challenge_url, headers=submit_headers, data=submit_payload)
-                    if submit_resp.status_code == 303:
-                        logging.info("URA GOTOVO!!!")
+                    logging.info(f"Challenge submitted. Status code: {submit_resp.status_code}.")
+                    captcha_found = True
                     break
+        if not captcha_found:
+            logging.info("No captcha found, skipping solving")
         response = await s.post('https://mobbin.com/login', params=params, cookies=cookies_res, headers=headers, data=data)
         cookies_res = {k: v for k, v in response.cookies.items()}
-        logging.error("Cookies updated.")
-        with open("keys/mobbin_cookies.json", "w") as f:
-            f.write(json.dumps([{"name": k, "value": v} for k, v in cookies_res.items()]))
+    with open("keys/mobbin_cookies.json", "w") as f:
+        f.write(json.dumps([{"name": k, "value": v} for k, v in cookies_res.items()]))
+    logging.info("Cookies updated.")
+    lock = False
     return cookies_res

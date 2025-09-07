@@ -14,12 +14,12 @@ from firebase_admin.auth import UserRecord
 
 from pydantic import BaseModel, Field
 
-from src.core.configs import configs
+from core.configs import configs
 
-from src.tools.exceptions import ExceptionMessage, get_exception_id
-from src.tools.auth_deps import TokenMissing, FirebaseCommonException
+from tools.exceptions import ExceptionMessage, get_exception_id
+from tools.auth_deps import TokenMissing, FirebaseCommonException
 
-from src.repository.message import MessageRepository, InjectTestMessageRepository
+from repository.message import MessageRepository, InjectTestMessageRepository
 
 
 TRIAL_MESSAGES = 15
@@ -245,7 +245,7 @@ lifetime_paid_user_token, uid = get_token(
 async def identify_request_with_repository(
     headers: Annotated[AuthorizationHeader, Header()],
 ) -> Profile:
-    from src.tools.auth_deps import Profile, Identity
+    from tools.auth_deps import Profile, Identity
 
     if not headers.Auth and not headers.Authorization:
         raise TokenMissing()

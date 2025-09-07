@@ -9,21 +9,21 @@ from typing import Optional, List, Dict, Callable
 from fastapi import HTTPException, WebSocket
 
 
-from src.prompt_storage.api.storage import StorageApi
-from src.repository.chat import ChatRepository
-from src.repository.message import MessageRepository
+from prompt_storage.api.storage import StorageApi
+from repository.chat import ChatRepository
+from repository.message import MessageRepository
 
-from src.schemas.ws_message import WSMessageOut, RespTypes
+from schemas.ws_message import WSMessageOut, RespTypes
 
-from src.tools.chatgpt import stream_completion
-from src.tools.auth_deps import Identity
+from tools.chatgpt import stream_completion
+from tools.auth_deps import Identity
 
-from src.schemas.chat import (
+from schemas.chat import (
     ChatInDB,
     # ChatCreate,
     # ChatUpdate,
 )
-from src.schemas.message import (
+from schemas.message import (
     MessageCreate,
 )
 

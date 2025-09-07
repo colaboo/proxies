@@ -8,12 +8,12 @@ import toml
 from pydantic import BaseModel
 
 
-from src.tools.exceptions import (
+from tools.exceptions import (
     get_exception_id,
     ExceptionMessage,
 )
 
-# from src.core.configs import configs
+# from core.configs import configs
 
 
 class PromptNotFoundError(Exception):

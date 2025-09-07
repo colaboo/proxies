@@ -5,10 +5,10 @@ from urllib.parse import quote
 from aiohttp import ClientSession
 
 
-from src.core.configs import configs
+from core.configs import configs
 
 
-from src.tools.exceptions_shortcuts import ApiException
+from tools.exceptions_shortcuts import ApiException
 
 
 from cache import AsyncTTL

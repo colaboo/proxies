@@ -9,19 +9,19 @@ from fastapi import HTTPException, Header, Request, Cookie
 
 from firebase_admin import auth
 
-# from src.core.configs import firebase_app
+# from core.configs import firebase_app
 
 from pydantic import BaseModel, Field
 
-from src.core.configs import configs
+from core.configs import configs
 
-from src.tools.exceptions import ExceptionMessage, get_exception_id
+from tools.exceptions import ExceptionMessage, get_exception_id
 from dateutil.relativedelta import relativedelta
 
-from src.tools.duration import duration_to_month
+from tools.duration import duration_to_month
 
 
-# from src.repository.message import MessageRepository
+# from repository.message import MessageRepository
 
 
 TTL_FOR_MAP_ACCESS = datetime.timedelta(minutes=1)

@@ -26,18 +26,19 @@ from cache import AsyncTTL
 import cloudscraper
 from redis.asyncio import Redis
 
-from src.tools.proxy import inject_heartbeat
+from tools.proxy import inject_heartbeat
 
-from src.process_proxy.refero.login import login
+from process_proxy.refero.login import login
 
-# from src.tools.file import dump_to_file
-from src.core.configs import configs
+# from tools.file import dump_to_file
+from core.configs import configs
 redis_app = Redis(
-    host="redis",
-    port=6379,
+    host=configs.REDIS_HOST,
+    port=configs.REDIS_PORT,
+    db=configs.REDIS_DB,
 )
 
-scraper = cloudscraper.create_scraper()  #
+scraper = cloudscraper.create_scraper()
 
 agent_string = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36\
  (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
@@ -411,7 +412,7 @@ async def proxy_call(
     if str(request.query_params):
         url = url + "?" + str(request.query_params)
 
-    url_full = "https://" + configs.TARGET_HOST + "/" + url
+    url_full = "https://refero.design/" + url
     url_full = url_full.replace('staticc', 'static')
     if "data_images" in url_full:
         url_full = url_full.replace('data_images/', '').replace('https://', 'https://images.')

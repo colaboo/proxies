@@ -26,12 +26,12 @@ from cache import AsyncTTL
 import cloudscraper
 
 
-from src.tools.proxy import inject_heartbeat
+from tools.proxy import inject_heartbeat
 
-from src.process_proxy.freepik.login import login
+from process_proxy.freepik.login import login
 
-# from src.tools.file import dump_to_file
-from src.core.configs import configs
+# from tools.file import dump_to_file
+from core.configs import configs
 
 
 scraper = cloudscraper.create_scraper()  #
@@ -460,7 +460,9 @@ async def proxy_call(
     if str(request.query_params):
         url = url + "?" + str(request.query_params)
 
-    url_full = "https://" + configs.TARGET_HOST + "/" + url
+    url_full = "https://www.freepik.com/" + url
+    if url_full == "https://www.freepik.com/":
+        url_full = "https://www.freepik.com/search"
     if retarget:
         url_full = "https://" + retarget + "/" + url
     if "cdn_front" in url_full:

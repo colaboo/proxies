@@ -1,13 +1,12 @@
 from redis.asyncio import Redis
 from curl_cffi import requests
-
+from core.configs import configs
 
 redis_app = Redis(
-    host="redis",
-    port=6379,
+    host=configs.REDIS_HOST,
+    port=configs.REDIS_PORT,
+    db=configs.REDIS_DB,
 )
-
-
 
 
 async def get_proxy_origin(proxy_id: int):

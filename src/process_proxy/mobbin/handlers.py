@@ -16,10 +16,10 @@ from bs4 import BeautifulSoup
 import cloudscraper
 
 
-from src.process_proxy.mobbin.login import login, load_cookies
+from process_proxy.mobbin.login import login, load_cookies
 
-# from src.tools.file import dump_to_file
-from src.core.configs import configs
+# from tools.file import dump_to_file
+from core.configs import configs
 
 
 scraper = cloudscraper.create_scraper()  #
@@ -160,7 +160,7 @@ async def proxy_request(
     if headers.get('cookie'):
         del headers['cookie']
 
-    if "login" in url_full:
+    if "login" in url_full and "_rsc" in url_full:
         cookies_res = await login()
         return await proxy_request([{"name": k, "value": v} for k,v in cookies_res.items()], "https://mobbin.com/discover/apps/ios/latest", method, body, request)
 

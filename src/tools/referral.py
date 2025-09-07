@@ -1,7 +1,7 @@
 from itertools import accumulate
 from functools import reduce
 
-from src.core.configs import configs
+from core.configs import configs
 
 
 async def proc_free_transactions(

@@ -23,11 +23,11 @@ from openai.types.shared_params.function_definition import FunctionDefinition
 from openai.types.chat.chat_completion_chunk import ChoiceDeltaToolCall
 
 
-from src.core.configs import openai_client, configs
+from core.configs import openai_client, configs
 
-from src.schemas.message import MessageInDB
+from schemas.message import MessageInDB
 
-from src.tools.exceptions import (
+from tools.exceptions import (
     get_exception_id,
     ExceptionMessage,
 )

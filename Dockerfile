@@ -1,6 +1,4 @@
-# syntax = docker/dockerfile:1
-
-FROM python:3.13-slim as builder
+FROM python:3.13-slim AS builder
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
 
@@ -13,10 +11,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 FROM python:3.13-slim
 
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
-
 # Системные зависимости
-RUN apt-get update && apt-get install -y tor curl \
+RUN apt-get update && apt-get install -y --no-install-recommends tor curl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -60,13 +56,14 @@ RUN useradd --create-home --shell /bin/bash app
 # RUN apt-get update
 # & apt-get install git
 
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
 COPY --from=builder --chown=app:app /src/.venv /src/.venv
 
 WORKDIR /src
 
 # Копирование исходного кода
 COPY --chown=app:app . .
-
+RUN mkdir -p /src/keys && chown -R app:app /src/keys
 USER app
 
 # Настройка PATH для использования venv
@@ -74,7 +71,8 @@ ENV PATH="/src/.venv/bin:$PATH"
 ENV PYTHONPATH=/src
 
 #RUN killall tor
-#RUN tor --RunAsDaemon 1 --CookieAuthentication 0 --ControlPort 8118 --SocksPort 9050
+# TODO: tor запускается во время билда, а нужно во время рантайма
+# RUN tor --RunAsDaemon 1 --CookieAuthentication 0 --ControlPort 8118 --SocksPort 9050
 EXPOSE 8000
 
-CMD uv run uvicorn src.main:app --host 0.0.0.0 --port 8000 --log-config src/core/log.config
+CMD uv run python src/main.py

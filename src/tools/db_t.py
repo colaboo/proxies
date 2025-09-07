@@ -10,7 +10,7 @@ from asyncpg import (
 )
 
 
-from src.tools.db import (
+from tools.db import (
     ConnectionInterface,
     ManagerInterface,
     DatabaseConnection,
