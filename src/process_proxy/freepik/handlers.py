@@ -165,6 +165,7 @@ async def proxy_request(
 ) -> Response:
     headers = {k: v for k, v in request.headers.items()}
     headers['host'] = "www.freepik.com"
+    headers['user-agent'] = "curl/7.68.0"
     if headers.get('referer'):
         del headers['referer']
     if headers.get('cookie'):
@@ -205,8 +206,6 @@ async def proxy_request(
 
             **kwargs
         )
-
-
 
     logging.error(response.status_code)
     logging.error(kwargs)
@@ -333,16 +332,35 @@ document.querySelectorAll('div.mx-auto.flex.max-w-screen-2xl.flex-col').forEach(
             response.content = response.content.replace('!!(null==null?void 0:true)', ' true')
     except:
         ...
+    # Обновляем cookies файл если получили новые данные
+
+    # Проверяем новые токены
     GR_TOKEN = response.cookies.get('GR_TOKEN')
     GR_REFRESH = response.cookies.get('GR_REFRESH')
+
+    # Проверяем другие важные cookies
+    XSRF_TOKEN = response.cookies.get('XSRF-TOKEN')
+    pikaso_session = response.cookies.get('pikaso_session')
+
+    # Загружаем текущие cookies
+    with open('/src/keys/freepik_cookies.json', 'r') as f:
+        data = json.loads(f.read())
+
+    # Обновляем токены если получили новые
     if GR_TOKEN and GR_REFRESH:
-        import json
-        with open("keys/freepik_cookies.json", "r") as f:
-            data = json.loads(f.read())
         data['GR_TOKEN'] = GR_TOKEN
         data['GR_REFRESH'] = GR_REFRESH
-        with open("keys/freepik_cookies.json", "w") as f:
-            data = f.write(json.dumps(data))
+
+    # Обновляем другие важные cookies
+    if XSRF_TOKEN:
+        data['XSRF-TOKEN'] = XSRF_TOKEN
+
+    if pikaso_session:
+        data['pikaso_session'] = pikaso_session
+
+    if any((GR_TOKEN, GR_REFRESH, XSRF_TOKEN, pikaso_session)):
+        with open('/src/keys/freepik_cookies.json', 'w') as f:
+            f.write(json.dumps(data))
     return response
 
 
