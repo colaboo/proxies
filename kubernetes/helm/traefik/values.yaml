@@ -1,0 +1,6 @@
+deployment:
+  imagePullSecrets:
+    - name: docker-secrets
+
+service:
+  type: ClusterIP

@@ -1,0 +1,15 @@
+---
+- name: Installing node-exporter in a cluster // infra/ansible/playbook/kubernetes/helm/monitoring/node-exporter.yaml
+  hosts: dev
+  become: true
+  tasks:
+    - name: Add node-exporter chart repository to Helm
+      kubernetes.core.helm_repository:
+        name: node-exporter
+        repo_url: https://prometheus-community.github.io/helm-charts
+
+    - name: Install node-exporter
+      kubernetes.core.helm:
+        name: node-exporter
+        chart_ref: node-exporter/prometheus-node-exporter
+        release_namespace: nm-monitoring

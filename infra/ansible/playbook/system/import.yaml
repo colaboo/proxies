@@ -1,0 +1,12 @@
+---
+- name: Settings kernel
+  ansible.builtin.import_playbook: ./kernel/settings.yaml
+
+- name: Enabling forward
+  ansible.builtin.import_playbook: ./network/forward.yaml
+
+- name: Setting Iptables
+  ansible.builtin.import_playbook: ./network/iptables.yaml
+
+- name: Setting up resolv
+  ansible.builtin.import_playbook: ./network/resolv.yaml

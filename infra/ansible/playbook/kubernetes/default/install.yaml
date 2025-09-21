@@ -1,0 +1,42 @@
+---
+- name: Installing Kubernetes components
+  hosts: dev
+  become: true
+  tasks:
+    - name: Ensure apt keyrings directory exists
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: "0755"
+
+    - name: Copy Kubernetes repository file
+      ansible.builtin.copy:
+        src: ./kubernetes.list.j2
+        dest: /etc/apt/sources.list.d/kubernetes.list
+        mode: "0644"
+
+    - name: Download Kubernetes key
+      ansible.builtin.get_url:
+        url: https://pkgs.k8s.io/core:/stable:/v1.34/deb/Release.key
+        dest: /etc/apt/keyrings/kubernetes-release.key
+        mode: "0644"
+
+    - name: Convert Kubernetes key to gpg
+      ansible.builtin.command:
+        cmd: gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg /etc/apt/keyrings/kubernetes-release.key
+        creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+    - name: Install Kubernetes packages
+      ansible.builtin.apt:
+        name:
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: latest
+        update_cache: true
+
+    - name: Ensure kubelet service is enabled and started
+      ansible.builtin.systemd:
+        name: kubelet
+        state: started
+        enabled: true

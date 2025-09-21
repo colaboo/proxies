@@ -1,0 +1,15 @@
+---
+- name: Installing Grafana
+  ansible.builtin.import_playbook: ./grafana.yaml
+
+- name: Installing prometheus
+  ansible.builtin.import_playbook: ./prometheus-comm.yaml
+
+- name: Installing Node-exporter
+  ansible.builtin.import_playbook: ./node-exporter.yaml
+
+- name: Installing Loki
+  ansible.builtin.import_playbook: ./loki-helm.yaml
+
+- name: Installing Promtail
+  ansible.builtin.import_playbook: ./promtail.yaml

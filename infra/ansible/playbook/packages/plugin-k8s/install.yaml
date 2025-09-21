@@ -1,0 +1,9 @@
+---
+- name: Loading python and after the Kubernetes library // infra/ansible/playbook/packages/plugin-k8s/install.yaml
+  hosts: dev
+  become: true
+  tasks:
+    - name: Install Python
+      ansible.builtin.apt:
+        name: [python3-full, python3-kubernetes]
+        state: latest

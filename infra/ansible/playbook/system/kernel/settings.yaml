@@ -1,0 +1,13 @@
+- name: Configuring Kernel Modules
+  hosts: dev
+  become: true
+  tasks:
+    - name: Configuring Kernel Modules overlay
+      community.general.modprobe:
+        name: overlay
+        state: present
+
+    - name: Configuring Kernel Modules br_netfilter
+      community.general.modprobe:
+        name: br_netfilter
+        state: present

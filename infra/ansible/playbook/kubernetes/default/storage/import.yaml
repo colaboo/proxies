@@ -1,0 +1,5 @@
+- name: Creating a StorageClass
+  ansible.builtin.import_playbook: ./storage.yaml
+
+- name: Creating a PersistentVolumeClaim
+  ansible.builtin.import_playbook: ./pvc.yaml

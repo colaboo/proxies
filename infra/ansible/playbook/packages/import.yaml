@@ -1,0 +1,12 @@
+---
+- name: Installing tar
+  ansible.builtin.import_playbook: ./unpackers/tar.yaml
+
+- name: Install curl
+  ansible.builtin.import_playbook: ./curl/install.yaml
+
+- name: Set CRI-O as CRI
+  ansible.builtin.import_playbook: ./cri/cri-o/install.yaml
+
+- name: Install kubernetes ansible library
+  ansible.builtin.import_playbook: ./plugin-k8s/install.yaml

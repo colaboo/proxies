@@ -1,0 +1,9 @@
+moscow:
+  children:
+    peaceful:
+      children:
+        dev:
+          hosts:
+            host1:
+              ansible_host: 89.223.127.11
+              ansible_user: root

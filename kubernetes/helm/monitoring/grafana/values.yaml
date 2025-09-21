@@ -1,0 +1,5 @@
+global:
+  imagePullSecrets:
+    - name: docker-secrets
+
+replicas: 2

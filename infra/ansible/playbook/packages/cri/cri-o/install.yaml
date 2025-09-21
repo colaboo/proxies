@@ -1,0 +1,39 @@
+---
+- name: Installing CRI-O
+  hosts: dev
+  become: true
+  tasks:
+    - name: Ensure apt keyrings directory exists
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: "0755"
+
+    - name: Copy CRI-O repository file
+      ansible.builtin.copy:
+        src: ./cri-o.list.j2
+        dest: /etc/apt/sources.list.d/cri-o.list
+        mode: "0644"
+
+    - name: Download CRI-O key
+      ansible.builtin.get_url:
+        url: https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v1.34/deb/Release.key
+        dest: /etc/apt/keyrings/cri-o-release.key
+        mode: "0644"
+
+    - name: Convert CRI-O key to gpg
+      ansible.builtin.command:
+        cmd: gpg --dearmor -o /etc/apt/keyrings/cri-o-apt-keyring.gpg /etc/apt/keyrings/cri-o-release.key
+        creates: /etc/apt/keyrings/cri-o-apt-keyring.gpg
+
+    - name: Install CRI-O package
+      ansible.builtin.apt:
+        name: cri-o
+        state: latest
+        update_cache: true
+
+    - name: Ensure CRI-O service is enabled and started
+      ansible.builtin.systemd:
+        name: crio
+        state: started
+        enabled: true

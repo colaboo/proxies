@@ -1,0 +1,21 @@
+---
+- name: Installing kubernetes
+  ansible.builtin.import_playbook: ./install.yaml
+
+- name: We install our cluster via kubeadm
+  ansible.builtin.import_playbook: ./kubeadm.yaml
+
+- name: Installing CNI Cilium
+  ansible.builtin.import_playbook: ./cilium.yaml
+
+- name: Making the cluster single-node
+  ansible.builtin.import_playbook: ./single-node.yaml
+
+- name: Creating and namespace
+  ansible.builtin.import_playbook: ./namespace.yaml
+
+- name: Creating secrets
+  ansible.builtin.import_playbook: ./secrets/import.yaml
+
+- name: Creating storage
+  ansible.builtin.import_playbook: ./storage/import.yaml

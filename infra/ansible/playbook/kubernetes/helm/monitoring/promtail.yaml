@@ -1,0 +1,23 @@
+---
+- name: Installing grafana/promtail in a cluster // infra/ansible/playbook/kubernetes/helm/monitoring/promtail.yaml
+  hosts: dev
+  become: true
+  tasks:
+    - name: Copy the required values.yaml
+      ansible.builtin.copy:
+        src: ../../../../../../kubernetes/helm/monitoring/promtail/values.yaml
+        dest: /root/promtail.yaml
+        remote_src: false
+
+    - name: Install Grafana/promtail
+      kubernetes.core.helm:
+        name: promtail
+        chart_ref: grafana/promtail
+        release_namespace: nm-monitoring
+        values_files:
+          - /root/promtail.yaml
+
+    - name: Delete the file that is no longer needed
+      ansible.builtin.file:
+        path: /root/promtail.yaml
+        state: absent

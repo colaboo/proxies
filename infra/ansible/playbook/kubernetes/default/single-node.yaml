@@ -1,0 +1,7 @@
+---
+- name: Single node cluster setup // infra/ansible/playbook/kubernetes/default/single-node.yaml
+  hosts: dev
+  become: true
+  tasks:
+    - name: Untaint control plane nodes
+      ansible.builtin.command: kubectl taint nodes --all node-role.kubernetes.io/control-plane-

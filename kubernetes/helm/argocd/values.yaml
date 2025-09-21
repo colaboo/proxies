@@ -1,0 +1,8 @@
+global:
+  domain: argo.lune.su
+
+  imagePullSecrets:
+    - name: docker-secrets
+
+server:
+  replicas: 2

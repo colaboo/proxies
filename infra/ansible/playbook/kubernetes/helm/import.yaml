@@ -1,0 +1,15 @@
+---
+- name: Installing Helm
+  ansible.builtin.import_playbook: ./install.yaml
+
+- name: Settings CNI
+  ansible.builtin.import_playbook: ./cni/install.yaml
+
+- name: Installing Traefik
+  ansible.builtin.import_playbook: ./traefik/install.yaml
+
+- name: Installing Monitoring
+  ansible.builtin.import_playbook: ./monitoring/import.yaml
+
+- name: Installing ArgoCD
+  ansible.builtin.import_playbook: ./argo/install.yaml

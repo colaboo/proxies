@@ -1,0 +1,9 @@
+---
+- name: Installing tar // infra/ansible/playbook/packages/unpackers/tar.yaml
+  hosts: dev
+  become: true
+  tasks:
+    - name: Install tar
+      ansible.builtin.apt:
+        name: tar
+        state: latest

@@ -1,0 +1,14 @@
+---
+- name: We make traffic pass through a network bridge // infra/ansible/playbook/system/network/ipv6.yaml
+  hosts: dev
+  become: true
+  tasks:
+    - name: Required parameters for Kubernetes
+      ansible.posix.sysctl:
+        name: net.bridge.bridge-nf-call-iptables
+        value: "1"
+
+    - name: Required parameters for Kubernetes
+      ansible.posix.sysctl:
+        name: net.bridge.bridge-nf-call-ip6tables
+        value: "1"

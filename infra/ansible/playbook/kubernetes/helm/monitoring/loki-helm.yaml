@@ -1,0 +1,23 @@
+---
+- name: Installing grafana/loki in a cluster // infra/ansible/playbook/kubernetes/helm/monitoring/loki-helm.yaml
+  hosts: dev
+  become: true
+  tasks:
+    - name: Copy the required values.yaml
+      ansible.builtin.copy:
+        src: ../../../../../../kubernetes/helm/monitoring/grafana/loki/values.yaml
+        dest: /root/loki.yaml
+        remote_src: false
+
+    - name: Install Grafana/loki
+      kubernetes.core.helm:
+        name: loki
+        chart_ref: grafana/loki
+        release_namespace: nm-monitoring
+        values_files:
+          - /root/loki.yaml
+
+    - name: Delete the file that is no longer needed
+      ansible.builtin.file:
+        path: /root/loki.yaml
+        state: absent

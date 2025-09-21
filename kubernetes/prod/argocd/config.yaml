@@ -1,0 +1,18 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bootstrap
+  namespace: nm-argo
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/MounTemed/proxies
+    targetRevision: main
+    path: kubernetes/
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

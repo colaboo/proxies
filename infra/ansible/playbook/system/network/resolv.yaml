@@ -1,0 +1,12 @@
+- name: Configuring /etc/resolv // infra/ansible/playbook/system/network/resolv.yaml
+  hosts: dev
+  become: true
+  tasks:
+    - name: We copy the file we need
+      ansible.builtin.copy:
+        src: ./resolv.conf.j2
+        dest: /etc/resolv.conf
+        remote_src: false
+
+    - name: Reboot network
+      ansible.builtin.command: sysctl -p

@@ -1,0 +1,13 @@
+---
+- name: Installing helm // infra/ansible/playbook/kubernetes/helm/install.yaml
+  hosts: dev
+  become: true
+  tasks:
+    - name: We get the required .sh file
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+        dest: /tmp/get_helm.sh
+        mode: "700"
+
+    - name: Run the resulting .sh file
+      ansible.builtin.command: /tmp/get_helm.sh

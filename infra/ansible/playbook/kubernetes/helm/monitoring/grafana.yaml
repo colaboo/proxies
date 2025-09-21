@@ -1,0 +1,28 @@
+---
+- name: Installing grafana in a cluster // infra/ansible/playbook/kubernetes/helm/monitoring/grafana.yaml
+  hosts: dev
+  become: true
+  tasks:
+    - name: Add Grafana chart repository to Helm
+      kubernetes.core.helm_repository:
+        name: grafana
+        repo_url: https://grafana.github.io/helm-charts
+
+    - name: Copy the required values.yaml
+      ansible.builtin.copy:
+        src: ../../../../../../kubernetes/helm/monitoring/grafana/values.yaml
+        dest: /root/grafana.yaml
+        remote_src: false
+
+    - name: Install Grafana
+      kubernetes.core.helm:
+        name: grafana
+        chart_ref: grafana/grafana
+        release_namespace: nm-monitoring
+        values_files:
+          - /root/grafana.yaml
+
+    - name: Delete the file that is no longer needed
+      ansible.builtin.file:
+        path: /root/grafana.yaml
+        state: absent

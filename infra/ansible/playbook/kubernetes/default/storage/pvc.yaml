@@ -1,0 +1,36 @@
+---
+- name: Creating PVCs // infra/ansible/playbook/kubernetes/default/storage/pvc.yaml
+  hosts: dev
+  become: true
+  tasks:
+    - name: PersistentVolumeClaim for promtail
+      kubernetes.core.k8s:
+        api_version: v1
+        kind: PersistentVolumeClaim
+        namespace: nm-monitoring
+        name: promtail-pvc
+        state: present
+        resource_definition:
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 10Gi
+            storageClassName: local-path
+
+    - name: PersistentVolumeClaim for prometheus
+      kubernetes.core.k8s:
+        api_version: v1
+        kind: PersistentVolumeClaim
+        namespace: nm-monitoring
+        name: prometheus-pvc
+        state: present
+        resource_definition:
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 10Gi
+            storageClassName: local-path

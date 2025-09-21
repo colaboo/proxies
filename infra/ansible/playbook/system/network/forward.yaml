@@ -1,0 +1,11 @@
+---
+- name: Enable Ip_forward // infra/ansible/playbook/system/network/forward.yaml
+  hosts: dev
+  become: true
+  tasks:
+    - name: Enabling forward
+      ansible.posix.sysctl:
+        name: net.ipv4.ip_forward
+        value: "1"
+        state: present
+        sysctl_set: true

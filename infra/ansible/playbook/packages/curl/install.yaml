@@ -1,0 +1,8 @@
+- name: Installing a curl
+  hosts: dev
+  become: true
+  tasks:
+    - name: Install curl
+      ansible.builtin.apt:
+        name: curl
+        state: latest

@@ -1,0 +1,28 @@
+---
+- name: Installing CNI Cilium in a cluster an helm // infra/ansible/playbook/kubernetes/helm/cni/install.yaml
+  hosts: dev
+  become: true
+  tasks:
+    - name: Add Cilium chart repository to Helm
+      kubernetes.core.helm_repository:
+        name: cilium
+        repo_url: https://helm.cilium.io/
+
+    - name: Copy the required values.yaml
+      ansible.builtin.copy:
+        src: ../../../../../../kubernetes/helm/network/cni/cilium/values.yaml
+        dest: /root/cilium.yaml
+        remote_src: false
+
+    - name: Install Cilium
+      kubernetes.core.helm:
+        name: cilium
+        chart_ref: cilium/cilium
+        release_namespace: kube-system
+        values_files:
+          - /root/cilium.yaml
+
+    - name: Delete the file that is no longer needed
+      ansible.builtin.file:
+        path: /root/cilium.yaml
+        state: absent
