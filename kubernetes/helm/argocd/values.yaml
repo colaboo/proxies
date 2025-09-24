@@ -1,8 +1,23 @@
 global:
-  domain: argo.lune.su
-
+  domain: argo.collaboo.co
   imagePullSecrets:
     - name: docker-secrets
 
 server:
-  replicas: 2
+  ingress:
+    enabled: false
+
+  service:
+    type: ClusterIP
+    ports:
+      http:
+        port: 80
+        targetPort: 8080
+
+configs:
+  params:
+    server.insecure: "true"
+    server.resource.customresourcedefinitions: "true"
+    server.namespaces: "nm-argo"
+    server.basehref: "/"
+    server.rootpath: ""

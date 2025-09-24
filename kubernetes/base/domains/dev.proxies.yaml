@@ -2,8 +2,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: prometheus-ingress
-  namespace: nm-monitoring
+  name: argo-ingress
+  namespace: nm-develop
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
@@ -13,16 +13,16 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - prometheus.collaboo.co
-      secretName: prometheus-collaboo-tls
+        - develop.collaboo.co
+      secretName: develop-collaboo-tls
   rules:
-    - host: prometheus.collaboo.co
+    - host: develop.collaboo.co
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: prometheus-server
+                name: develop-service-proxies
                 port:
-                  number: 9090
+                  number: 8000

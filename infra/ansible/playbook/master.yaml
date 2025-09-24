@@ -1,4 +1,8 @@
 ---
+- name: Update system and reboot
+  ansible.builtin.import_playbook: ./update/install.yaml
+  tags: [update]
+
 - name: Setting up our cloud
   ansible.builtin.import_playbook: ./system/import.yaml
   tags: [system]
@@ -11,6 +15,6 @@
   ansible.builtin.import_playbook: ./kubernetes/import.yaml
   tags: [kubernetes]
 
-- name: System update and restart
-  ansible.builtin.import_playbook: ./end/update.yaml
+- name: Receiving a password
+  ansible.builtin.import_playbook: ./end/end.yaml
   tags: [end]

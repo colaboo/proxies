@@ -4,10 +4,15 @@
   become: true
   vars:
     namespaces:
+      - nm-nginx
       - nm-proxies
+      - nm-develop
       - nm-argo
       - nm-monitoring
       - nm-traefik
+      - nm-cert-manager
+
+      - metallb-system
       - local-path-storage
 
   tasks:

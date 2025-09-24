@@ -1,5 +1,2 @@
 imagePullSecrets:
   - name: docker-secrets
-
-operator:
-  replicas: 1

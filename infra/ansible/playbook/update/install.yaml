@@ -1,0 +1,13 @@
+---
+- name: Updating the system and restarting it // infra/ansible/playbook/end/install.yaml
+  hosts: dev
+  become: true
+  tasks:
+    - name: We update all packages
+      ansible.builtin.apt:
+        name: "*"
+        state: latest
+
+    - name: Reboot system
+      ansible.builtin.reboot:
+        reboot_timeout: 300

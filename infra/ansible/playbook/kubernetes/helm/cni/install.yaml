@@ -21,6 +21,7 @@
         release_namespace: kube-system
         values_files:
           - /root/cilium.yaml
+        wait: true
 
     - name: Delete the file that is no longer needed
       ansible.builtin.file:

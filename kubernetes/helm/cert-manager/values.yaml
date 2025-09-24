@@ -1,0 +1,14 @@
+installCRDs: true
+
+replicaCount: 1
+
+global:
+  leaderElection:
+    namespace: nm-cert-manager
+  imagePullSecrets:
+    - name: docker-secrets
+
+ingressShim:
+  defaultIssuerName: "letsencrypt-prod"
+  defaultIssuerKind: "ClusterIssuer"
+  defaultIssuerGroup: "cert-manager.io"

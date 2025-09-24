@@ -16,7 +16,7 @@
               - ReadWriteOnce
             resources:
               requests:
-                storage: 10Gi
+                storage: 40Gi
             storageClassName: local-path
 
     - name: PersistentVolumeClaim for prometheus
@@ -33,4 +33,20 @@
             resources:
               requests:
                 storage: 10Gi
+            storageClassName: local-path
+
+    - name: PersistentVolumeClaim for grafana
+      kubernetes.core.k8s:
+        api_version: v1
+        kind: PersistentVolumeClaim
+        namespace: nm-monitoring
+        name: grafana-pvc
+        state: present
+        resource_definition:
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 2Gi
             storageClassName: local-path

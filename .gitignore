@@ -208,3 +208,8 @@ downloaded_files/*
 
 # Ansible
 data/ansible-log.txt
+data/grafana.txt
+data/argocd.txt
+
+# Kubernetes
+kubernetes/prod/argocd/secrets.yaml

@@ -1,0 +1,44 @@
+---
+- name: Installing metallb // infra/ansible/playbook/kubernetes/helm/metallb/install.yaml
+  hosts: dev
+  become: true
+
+  tasks:
+    - name: Add metallb chart repository to Helm
+      kubernetes.core.helm_repository:
+        name: metallb
+        repo_url: https://metallb.github.io/metallb
+
+    - name: Copy the required values.yaml
+      ansible.builtin.copy:
+        src: ../../../../../../kubernetes/helm/metallb/values.yaml
+        dest: /root/metallb.yaml
+        remote_src: false
+
+    - name: Install metallb
+      kubernetes.core.helm:
+        name: metallb
+        chart_ref: metallb/metallb
+        release_namespace: metallb-system
+        wait: true
+
+    - name: Delete the file that is no longer needed
+      ansible.builtin.file:
+        path: /root/metallb.yaml
+        state: absent
+
+    - name: Copy the required values.yaml
+      ansible.builtin.copy:
+        src: ../../../../../../kubernetes/prod/metallb/config.yaml
+        dest: /root/mettalb-config.yaml
+        remote_src: false
+
+    - name: We apply the required YAML
+      kubernetes.core.k8s:
+        src: /root/mettalb-config.yaml
+        state: present
+
+    - name: Delete the file that is no longer needed
+      ansible.builtin.file:
+        path: /root/mettalb-config.yaml
+        state: absent

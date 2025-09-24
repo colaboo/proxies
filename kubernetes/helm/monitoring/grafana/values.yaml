@@ -3,3 +3,10 @@ global:
     - name: docker-secrets
 
 replicas: 2
+
+ingress:
+  hosts:
+    - grafana.collaboo.co
+
+  tls:
+    - name: grafana-collaboo-tls

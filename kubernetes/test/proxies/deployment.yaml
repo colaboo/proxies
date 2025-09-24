@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: proxies-test
+  namespace: nm-develop
+  labels:
+    app: proxies-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: proxies-test
+  template:
+    metadata:
+      labels:
+        app: proxies-test
+    spec:
+      containers:
+        - name: proxies-test
+          image: docker.io/proxiestest/proxies-test:latest
+          ports:
+            - containerPort: 8000
+      imagePullSecrets:
+        - name: proxies-test-secrets

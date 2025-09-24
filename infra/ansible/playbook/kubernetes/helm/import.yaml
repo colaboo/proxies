@@ -5,8 +5,14 @@
 - name: Settings CNI
   ansible.builtin.import_playbook: ./cni/install.yaml
 
-- name: Installing Traefik
-  ansible.builtin.import_playbook: ./traefik/install.yaml
+- name: Installing MetalLB
+  ansible.builtin.import_playbook: ./metallb/install.yaml
+
+- name: Installing Nginx
+  ansible.builtin.import_playbook: ./nginx/install.yaml
+
+- name: Installing cert-manager
+  ansible.builtin.import_playbook: ./cert-manager/install.yaml
 
 - name: Installing Monitoring
   ansible.builtin.import_playbook: ./monitoring/import.yaml

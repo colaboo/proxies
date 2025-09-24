@@ -1,3 +1,10 @@
+global:
+  image:
+    registry: docker.io
+
+imagePullSecrets:
+  - name: docker-secrets
+
 loki:
   schemaConfig:
     configs:

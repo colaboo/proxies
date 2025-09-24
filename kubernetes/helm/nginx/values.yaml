@@ -1,0 +1,20 @@
+imagePullSecrets:
+  - name: docker-secrets
+
+controller:
+  kind: Deployment
+  service:
+    enabled: true
+    type: LoadBalancer
+    externalTrafficPolicy: Local
+    ports:
+      http: 80
+      https: 443
+  hostNetwork: true
+  hostPort:
+    enabled: false
+
+  ingressClassResource:
+    name: "nginx"
+    enabled: true
+    default: false

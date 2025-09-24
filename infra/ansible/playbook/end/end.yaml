@@ -1,0 +1,30 @@
+---
+- name: Receiving a password // infra/ansible/playbook/end/install.yaml
+  hosts: dev
+  become: false
+  tasks:
+    - name: Display success message
+      ansible.builtin.debug:
+        msg: "Happy using! b.y. LaiMicK"
+
+    - name: Get ArgoCD admin password
+      ansible.builtin.shell: kubectl -n nm-argo get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+      register: argocd_password
+
+    - name: Save ArgoCD password to file on localhost
+      ansible.builtin.copy:
+        content: "{{ argocd_password.stdout }}\n"
+        dest: ../../../../data/argocd.txt
+        mode: "0600"
+      delegate_to: localhost
+
+    - name: Get grafana admin password
+      ansible.builtin.shell: kubectl get secret --namespace nm-monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+      register: grafana_password
+
+    - name: Save grafana password to file on localhost
+      ansible.builtin.copy:
+        content: "{{ grafana_password.stdout }}\n"
+        dest: ../../../../data/grafana.txt
+        mode: "0600"
+      delegate_to: localhost

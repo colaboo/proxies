@@ -1,15 +1,55 @@
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: bootstrap
+  name: bootstrap-prod
   namespace: nm-argo
 spec:
   project: default
   source:
-    repoURL: https://github.com/MounTemed/proxies
+    repoURL: ssh://git@github.com:colaboo/proxies.git
     targetRevision: main
-    path: kubernetes/
+    path: kubernetes/prod/
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bootstrap-base
+  namespace: nm-argo
+spec:
+  project: default
+  source:
+    repoURL: ssh://git@github.com:colaboo/proxies.git
+    targetRevision: main
+    path: kubernetes/base/
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: bootstrap-test
+  namespace: nm-argo
+spec:
+  project: default
+  source:
+    repoURL: ssh://git@github.com:colaboo/proxies.git
+    targetRevision: test
+    path: kubernetes/test/
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:

@@ -22,8 +22,41 @@
         release_namespace: nm-argo
         values_files:
           - /root/argo.yaml
+        wait: true
 
     - name: Delete the file that is no longer needed
       ansible.builtin.file:
         path: /root/argo.yaml
+        state: absent
+
+    - name: Copying the configuration
+      ansible.builtin.copy:
+        src: ../../../../../../kubernetes/prod/argocd/secrets.yaml
+        dest: /root/argo-secrets.yaml
+        remote_src: false
+
+    - name: Apply the configuration once
+      kubernetes.core.k8s:
+        src: /root/argo-secrets.yaml
+        state: present
+
+    - name: Delete the configuration
+      ansible.builtin.file:
+        path: /root/argo-secrets.yaml
+        state: absent
+
+    - name: Copy the required values.yaml
+      ansible.builtin.copy:
+        src: ../../../../../../kubernetes/prod/argocd/config.yaml
+        dest: /root/config.yaml
+        remote_src: false
+
+    - name: We apply the required YAML
+      kubernetes.core.k8s:
+        src: /root/config.yaml
+        state: present
+
+    - name: Delete the file that is no longer needed
+      ansible.builtin.file:
+        path: /root/config.yaml
         state: absent
