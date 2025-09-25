@@ -212,4 +212,7 @@ data/grafana.txt
 data/argocd.txt
 
 # Kubernetes
-kubernetes/prod/argocd/secrets.yaml
+kubernetes/base/argocd/secrets.yaml
+
+# Cookie
+cookie/

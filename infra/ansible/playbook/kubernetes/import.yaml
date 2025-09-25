@@ -4,3 +4,4 @@
 
 - name: Importing helm
   ansible.builtin.import_playbook: ./helm/import.yaml
+  tags: [test]

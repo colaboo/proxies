@@ -1,18 +1,29 @@
-name: CI Pipeline
+name: CI Pipeline Prod
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+    paths-ignore:
+      - "kubernetes/prod/proxies/deployment.yaml"
 
 jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
-      - name: Login to Docker.hub
+      - name: Get version tag
+        id: get_version
+        run: |
+          COMMIT_SHORT=$(git rev-parse --short HEAD)
+          DATE=$(date +%Y%m%d-%H%M%S)
+          echo "VERSION=${DATE}-${COMMIT_SHORT}" >> $GITHUB_OUTPUT
+          echo "New version: ${DATE}-${COMMIT_SHORT}"
+
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -26,4 +37,21 @@ jobs:
         with:
           context: ./
           push: true
-          tags: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/proxies:latest
+          tags: |
+            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/proxies:latest
+            docker.io/${{ secrets.DOCKERHUB_USERNAME }}/proxies:${{ steps.get_version.outputs.VERSION }}
+
+      - name: Update ArgoCD deployment
+        run: |
+          sed -i "s|image: docker.io/kworkdevsecops/proxies:.*|image: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/proxies:${{ steps.get_version.outputs.VERSION }}|" kubernetes/prod/proxies/deployment.yaml
+          sed -i "s|image: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/proxies:.*|image: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/proxies:${{ steps.get_version.outputs.VERSION }}|" kubernetes/prod/proxies/deployment.yaml
+          git diff kubernetes/prod/proxies/deployment.yaml
+          if ! git diff --quiet kubernetes/prod/proxies/deployment.yaml; then
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git add kubernetes/prod/proxies/deployment.yaml
+            git commit -m "ci(prod): update image tag to ${{ steps.get_version.outputs.VERSION }}"
+            git push
+          else
+            echo "No changes needed"
+          fi

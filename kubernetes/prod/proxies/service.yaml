@@ -5,7 +5,7 @@ metadata:
   namespace: nm-proxies
 spec:
   selector:
-    app: service-proxies
+    app: proxies
   ports:
     - protocol: TCP
       port: 8000

@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: ssh://git@github.com:colaboo/proxies.git
+    repoURL: ssh://git@github.com/colaboo/proxies.git
     targetRevision: main
     path: kubernetes/prod/
     directory:
@@ -26,7 +26,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: ssh://git@github.com:colaboo/proxies.git
+    repoURL: ssh://git@github.com/colaboo/proxies.git
     targetRevision: main
     path: kubernetes/base/
     directory:
@@ -47,9 +47,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: ssh://git@github.com:colaboo/proxies.git
+    repoURL: ssh://git@github.com/colaboo/proxies.git
     targetRevision: test
     path: kubernetes/test/
+    directory:
+      recurse: true
   destination:
     server: https://kubernetes.default.svc
   syncPolicy:

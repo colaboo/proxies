@@ -1,0 +1,140 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: collaboo-ingress
+  namespace: nm-prod
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "256k"
+    nginx.ingress.kubernetes.io/proxy-buffers: "4 512k"
+    nginx.ingress.kubernetes.io/proxy-busy-buffers-size: "512k"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    nginx.ingress.kubernetes.io/ssl-protocols: "TLSv1.2 TLSv1.3"
+    nginx.ingress.kubernetes.io/ssl-ciphers: "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES256-SHA384"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection "upgrade";
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Proto $scheme;
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - craftwork.collaboo.co
+        - dev-mobbin.collaboo.co
+        - elements.collaboo.co
+        - flaticon.collaboo.co
+        - freepik.collaboo.co
+        - iconly.collaboo.co
+        - labs-elements.collaboo.co
+        - mobbin.collaboo.co
+        - refero.collaboo.co
+        - uxmove.collaboo.co
+      secretName: wildcard-collaboo-tls
+  rules:
+    - host: craftwork.collaboo.co
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: service-proxies
+                port:
+                  number: 8000
+    - host: dev-mobbin.collaboo.co
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: service-proxies
+                port:
+                  number: 8000
+    - host: elements.collaboo.co
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: service-proxies
+                port:
+                  number: 8000
+    - host: flaticon.collaboo.co
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: service-proxies
+                port:
+                  number: 8000
+    - host: freepik.collaboo.co
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: service-proxies
+                port:
+                  number: 8000
+    - host: iconly.collaboo.co
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: service-proxies
+                port:
+                  number: 8000
+    - host: labs-elements.collaboo.co
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: service-proxies
+                port:
+                  number: 8000
+    - host: mobbin.collaboo.co
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: service-proxies
+                port:
+                  number: 8000
+    - host: refero.collaboo.co
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: service-proxies
+                port:
+                  number: 8000
+    - host: uxmove.collaboo.co
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: service-proxies
+                port:
+                  number: 8000

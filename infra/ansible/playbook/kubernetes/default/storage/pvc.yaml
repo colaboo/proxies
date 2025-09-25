@@ -8,7 +8,7 @@
         api_version: v1
         kind: PersistentVolumeClaim
         namespace: nm-monitoring
-        name: promtail-pvc
+        name: loki-pvc
         state: present
         resource_definition:
           spec:
@@ -16,7 +16,7 @@
               - ReadWriteOnce
             resources:
               requests:
-                storage: 40Gi
+                storage: 20Gi
             storageClassName: local-path
 
     - name: PersistentVolumeClaim for prometheus
@@ -50,3 +50,37 @@
               requests:
                 storage: 2Gi
             storageClassName: local-path
+
+    # TODO
+
+    # - name: PersistentVolumeClaim for proxies-prod
+    #   kubernetes.core.k8s:
+    #     api_version: v1
+    #     kind: PersistentVolumeClaim
+    #     namespace: nm-proxies
+    #     name: proxies-pvc
+    #     state: present
+    #     resource_definition:
+    #       spec:
+    #         accessModes:
+    #           - ReadWriteOnce
+    #         resources:
+    #           requests:
+    #             storage: 5Gi
+    #         storageClassName: local-path
+
+    # - name: PersistentVolumeClaim for proxies-test
+    #   kubernetes.core.k8s:
+    #     api_version: v1
+    #     kind: PersistentVolumeClaim
+    #     namespace: nm-develop
+    #     name: proxies-pvc
+    #     state: present
+    #     resource_definition:
+    #       spec:
+    #         accessModes:
+    #           - ReadWriteOnce
+    #         resources:
+    #           requests:
+    #             storage: 5Gi
+    #         storageClassName: local-path

@@ -2,7 +2,6 @@
 - name: Installing metallb // infra/ansible/playbook/kubernetes/helm/metallb/install.yaml
   hosts: dev
   become: true
-
   tasks:
     - name: Add metallb chart repository to Helm
       kubernetes.core.helm_repository:
@@ -29,7 +28,7 @@
 
     - name: Copy the required values.yaml
       ansible.builtin.copy:
-        src: ../../../../../../kubernetes/prod/metallb/config.yaml
+        src: ../../../../../../kubernetes/base/metallb/config.yaml
         dest: /root/mettalb-config.yaml
         remote_src: false
 

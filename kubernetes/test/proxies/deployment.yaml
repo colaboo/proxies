@@ -20,5 +20,15 @@ spec:
           image: docker.io/proxiestest/proxies-test:latest
           ports:
             - containerPort: 8000
+          volumeMounts:
+            - name: cookie-test-volume
+              mountPath: /src/keys
+
       imagePullSecrets:
         - name: proxies-test-secrets
+
+      volumes:
+        - name: cookie-test-volume
+          hostPath:
+            path: /root/cookie-test
+            type: Directory

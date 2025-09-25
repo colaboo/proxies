@@ -3,6 +3,10 @@
   ansible.builtin.import_playbook: ./update/install.yaml
   tags: [update]
 
+- name: Copy the necessary cookies
+  ansible.builtin.import_playbook: ./files/import.yaml
+  tags: [cookie]
+
 - name: Setting up our cloud
   ansible.builtin.import_playbook: ./system/import.yaml
   tags: [system]

@@ -31,7 +31,7 @@
 
     - name: Copying the configuration
       ansible.builtin.copy:
-        src: ../../../../../../kubernetes/prod/argocd/secrets.yaml
+        src: ../../../../../../kubernetes/base/argocd/secrets.yaml
         dest: /root/argo-secrets.yaml
         remote_src: false
 
@@ -47,7 +47,7 @@
 
     - name: Copy the required values.yaml
       ansible.builtin.copy:
-        src: ../../../../../../kubernetes/prod/argocd/config.yaml
+        src: ../../../../../../kubernetes/base/argocd/config.yaml
         dest: /root/config.yaml
         remote_src: false
 

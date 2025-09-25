@@ -1,3 +1,4 @@
+---
 - name: Configuring /etc/resolv // infra/ansible/playbook/system/network/resolv.yaml
   hosts: dev
   become: true

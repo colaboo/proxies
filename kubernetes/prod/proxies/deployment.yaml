@@ -20,5 +20,15 @@ spec:
           image: docker.io/kworkdevsecops/proxies:latest
           ports:
             - containerPort: 8000
+          volumeMounts:
+            - name: cookie-prod-volume
+              mountPath: /src/keys
+
       imagePullSecrets:
         - name: docker-secrets
+
+      volumes:
+        - name: cookie-prod-volume
+          hostPath:
+            path: /root/cookie-prod
+            type: Directory

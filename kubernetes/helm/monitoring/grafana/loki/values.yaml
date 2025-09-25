@@ -62,12 +62,16 @@ read:
 write:
   replicas: 0
 
-singleBinary:
-  replicas: 0
-
 gateway:
   service:
     type: ClusterIP
 
 minio:
   enabled: true
+
+singleBinary:
+  persistence:
+    enableStatefulSetAutoDeletePVC: true
+    enabled: true
+    storageClass:
+      - name: loki-pvc
