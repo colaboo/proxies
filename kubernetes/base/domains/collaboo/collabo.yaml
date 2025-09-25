@@ -25,18 +25,7 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-    - hosts:
-        - craftwork.collaboo.co
-        - dev-mobbin.collaboo.co
-        - elements.collaboo.co
-        - flaticon.collaboo.co
-        - freepik.collaboo.co
-        - iconly.collaboo.co
-        - labs-elements.collaboo.co
-        - mobbin.collaboo.co
-        - refero.collaboo.co
-        - uxmove.collaboo.co
-      secretName: wildcard-collaboo-tls
+    secretName: proxies-collaboo-tls
   rules:
     - host: craftwork.collaboo.co
       http:

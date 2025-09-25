@@ -4,5 +4,4 @@ imagePullSecrets:
 server:
   persistentVolume:
     enabled: true
-    existingClaim:
-      - name: prometheus-pvc
+    existingClaim: prometheus-pvc

@@ -25,28 +25,38 @@ loki:
     allow_structured_metadata: true
     volume_enabled: true
 
-deploymentMode: Distributed
+deployment_mode: SimpleScalable
 
 ingester:
-  replicas: 3
+  replicas: 1
   zoneAwareReplication:
     enabled: false
+  persistence:
+    enabled: true
+    storageClass: loki-pvc
+    size: 10Gi
+
 querier:
-  replicas: 3
-  maxUnavailable: 2
+  replicas: 1
+  maxUnavailable: 0
+
 queryFrontend:
-  replicas: 2
-  maxUnavailable: 1
+  replicas: 1
+  maxUnavailable: 0
+
 queryScheduler:
-  replicas: 2
+  replicas: 1
+
 distributor:
-  replicas: 3
-  maxUnavailable: 2
+  replicas: 1
+  maxUnavailable: 0
+
 compactor:
   replicas: 1
+
 indexGateway:
-  replicas: 2
-  maxUnavailable: 1
+  replicas: 1
+  maxUnavailable: 0
 
 bloomPlanner:
   replicas: 0
@@ -69,9 +79,33 @@ gateway:
 minio:
   enabled: true
 
+resultsCache:
+  enabled: true
+  image:
+    registry: docker.io
+    repository: memcached
+    tag: "1.6.39-alpine"
+    pullPolicy: IfNotPresent
+  exporter:
+    image:
+      registry: docker.io
+      repository: prom/memcached-exporter
+      tag: "v0.15.3"
+      pullPolicy: IfNotPresent
+
+chunksCache:
+  enabled: true
+  image:
+    registry: docker.io
+    repository: memcached
+    tag: "1.6.39-alpine"
+    pullPolicy: IfNotPresent
+  exporter:
+    image:
+      registry: docker.io
+      repository: prom/memcached-exporter
+      tag: "v0.15.3"
+      pullPolicy: IfNotPresent
+
 singleBinary:
-  persistence:
-    enableStatefulSetAutoDeletePVC: true
-    enabled: true
-    storageClass:
-      - name: loki-pvc
+  enabled: false

@@ -13,3 +13,26 @@ spec:
       - http01:
           ingress:
             ingressClassName: nginx
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: proxies-collaboo
+  namespace: nm-prod
+spec:
+  secretName: proxies-collaboo-tls
+  dnsNames:
+    - craftwork.collaboo.co
+    - dev-mobbin.collaboo.co
+    - elements.collaboo.co
+    - flaticon.collaboo.co
+    - freepik.collaboo.co
+    - iconly.collaboo.co
+    - labs-elements.collaboo.co
+    - mobbin.collaboo.co
+    - refero.collaboo.co
+    - uxmove.collaboo.co
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
