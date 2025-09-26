@@ -30,41 +30,22 @@ jobs:
             docker.io/kworkdevsecops/proxies:latest
 
   deploy-helm:
-    needs: build-and-push
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up Helm
-        uses: azure/setup-helm@v4
-        with:
-          version: v3.19.0
+        uses: azure/setup-helm@v4.3.0
+        id: install
 
       - name: Set up kubectl
         uses: azure/setup-kubectl@v4
-        with:
-          version: v1.33.3
 
       - name: Configure Kubernetes
         run: |
-          echo "${{ secrets.KUBECONFIG }}" | base64 -d > kubeconfig
-          export KUBECONFIG=kubeconfig
-          kubectl get nodes
-
-      - name: Deploy with Helm upgrade
-        run: |
+          mkdir ~/.kube/ && echo "${{ secrets.KUBECONFIG }}" | base64 -d > ~/.kube/config
+          export KUBECONFIG=~/.kube/config
           cd infra/helm/proxy-backend
-
-          helm upgrade proxy-backend . \
-            --install \
-            --namespace default \
-            --values values.yaml \
-            --wait \
-            --timeout 5m
-
-          kubectl rollout restart deployment/proxy-backend -n default
-
-          kubectl rollout status deployment/proxy-backend -n default --timeout=5m
-
-          kubectl get pods -n default | grep proxy-backend
+          helm upgrade proxy-backend . --install --namespace default --values values.yaml --wait --timeout 5m
+          kubectl rollout restart deployment/proxy-backend -n default && kubectl rollout status deployment/proxy-backend -n default --timeout=5m
