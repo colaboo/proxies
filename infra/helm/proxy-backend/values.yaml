@@ -1,0 +1,48 @@
+image:
+  repository: docker.io/kworkdevsecops/proxies
+  tag: "latest"
+
+redis:
+  enabled: true
+  architecture: standalone
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: true
+      size: 1Gi
+      storageClass: ""
+    resources:
+      limits:
+        memory: 1Gi
+        cpu: 250m
+      requests:
+        memory: 256Mi
+        cpu: 100m
+
+# Настройки внешнего Redis
+externalRedis:
+  enabled: false
+  host: "redis.default.svc.cluster.local"
+  port: 6379
+  database: 0
+  auth:
+    enabled: false
+    password: ""
+    existingSecret: ""
+    existingSecretPasswordKey: ""
+# # Настройки вашего приложения
+# app:
+#   name: my-backend-app
+#   image:
+#     repository: my-app
+#     tag: "latest"
+#   redis:
+#     # Таймауты подключения к Redis
+#     connectionTimeout: 5000
+#     readTimeout: 3000
+#     # Настройки пула соединений
+#     pool:
+#       maxActive: 8
+#       maxIdle: 8
+#       minIdle: 0
