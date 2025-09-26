@@ -30,6 +30,7 @@ jobs:
             docker.io/kworkdevsecops/proxies:latest
 
   deploy-helm:
+    needs: build-and-push
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
