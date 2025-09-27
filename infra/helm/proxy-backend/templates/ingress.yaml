@@ -3,9 +3,9 @@ kind: Ingress
 metadata:
   name: proxy-backend-craftwork
   annotations:
+    kubernetes.io/ingress.class: "traefik"
     traefik.ingress.kubernetes.io/router.priority: "10"
     traefik.ingress.kubernetes.io/custom-request-headers.X-Target-Site: "craftwork"
-    kubernetes.io/ingress.class: "traefik"
 spec:
   ingressClassName: traefik
   rules:
@@ -25,9 +25,9 @@ kind: Ingress
 metadata:
   name: proxy-backend-envato
   annotations:
+    kubernetes.io/ingress.class: "traefik"
     traefik.ingress.kubernetes.io/router.priority: "10"
     traefik.ingress.kubernetes.io/custom-request-headers.X-Target-Site: "envato"
-    kubernetes.io/ingress.class: "traefik"
 spec:
   ingressClassName: traefik
   rules:
@@ -41,16 +41,15 @@ spec:
                 name: proxy-backend
                 port:
                   number: 80
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: proxy-backend-flaticon
   annotations:
+    kubernetes.io/ingress.class: "traefik"
     traefik.ingress.kubernetes.io/router.priority: "10"
     traefik.ingress.kubernetes.io/custom-request-headers.X-Target-Site: "flaticon"
-    kubernetes.io/ingress.class: "traefik"
 spec:
   ingressClassName: traefik
   rules:
@@ -64,16 +63,15 @@ spec:
                 name: proxy-backend
                 port:
                   number: 80
-              
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: proxy-backend-freepik
   annotations:
+    kubernetes.io/ingress.class: "traefik"
     traefik.ingress.kubernetes.io/router.priority: "10"
     traefik.ingress.kubernetes.io/custom-request-headers.X-Target-Site: "freepik"
-    kubernetes.io/ingress.class: "traefik"
 spec:
   ingressClassName: traefik
   rules:
@@ -87,16 +85,15 @@ spec:
                 name: proxy-backend
                 port:
                   number: 80
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: proxy-backend-iconly
   annotations:
+    kubernetes.io/ingress.class: "traefik"
     traefik.ingress.kubernetes.io/router.priority: "10"
     traefik.ingress.kubernetes.io/custom-request-headers.X-Target-Site: "iconly"
-    kubernetes.io/ingress.class: "traefik"
 spec:
   ingressClassName: traefik
   rules:
@@ -116,9 +113,9 @@ kind: Ingress
 metadata:
   name: proxy-backend-mobbin
   annotations:
-    traefik.ingress.kubernetes.io/router.priority: "10"
-    traefik.ingress.kubernetes.io/request-modifier: "X-Target-Site: mobbin"
     kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.priority: "10"
+    traefik.ingress.kubernetes.io/custom-request-headers.X-Target-Site: "mobbin"
 spec:
   ingressClassName: traefik
   rules:
@@ -132,16 +129,15 @@ spec:
                 name: proxy-backend
                 port:
                   number: 80
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: proxy-backend-refero
   annotations:
+    kubernetes.io/ingress.class: "traefik"
     traefik.ingress.kubernetes.io/router.priority: "10"
     traefik.ingress.kubernetes.io/custom-request-headers.X-Target-Site: "refero"
-    kubernetes.io/ingress.class: "traefik"
 spec:
   ingressClassName: traefik
   rules:
@@ -155,20 +151,195 @@ spec:
                 name: proxy-backend
                 port:
                   number: 80
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: proxy-backend-uxmovement
   annotations:
+    kubernetes.io/ingress.class: "traefik"
     traefik.ingress.kubernetes.io/router.priority: "10"
     traefik.ingress.kubernetes.io/custom-request-headers.X-Target-Site: "uxmovement"
-    kubernetes.io/ingress.class: "traefik"
 spec:
   ingressClassName: traefik
   rules:
     - host: "uxmove.collaboo.co"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: proxy-backend
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: proxy-backend-dev-craftwork
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.priority: "10"
+    traefik.ingress.kubernetes.io/custom-request-headers.X-Target-Site: "dev-craftwork"
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: "dev-craftwork.collaboo.co"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: proxy-backend
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: proxy-backend-dev-envato
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.priority: "10"
+    traefik.ingress.kubernetes.io/custom-request-headers.X-Target-Site: "dev-elements"
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: "dev-elements.collaboo.co"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: proxy-backend
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: proxy-backend-dev-flaticon
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.priority: "10"
+    traefik.ingress.kubernetes.io/custom-request-headers.X-Target-Site: "dev-flaticon"
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: "dev-flaticon.collaboo.co"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: proxy-backend
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: proxy-backend-dev-freepik
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.priority: "10"
+    traefik.ingress.kubernetes.io/custom-request-headers.X-Target-Site: "dev-freepik"
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: "dev-freepik.collaboo.co"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: proxy-backend
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: proxy-backend-dev-iconly
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.priority: "10"
+    traefik.ingress.kubernetes.io/custom-request-headers.X-Target-Site: "dev-iconly"
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: "dev-iconly.collaboo.co"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: proxy-backend
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: proxy-backend-dev-mobbin
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.priority: "10"
+    traefik.ingress.kubernetes.io/custom-request-headers.X-Target-Site: "dev-mobbin"
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: "dev-mobbin.collaboo.co"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: proxy-backend
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: proxy-backend-dev-refero
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.priority: "10"
+    traefik.ingress.kubernetes.io/custom-request-headers.X-Target-Site: "dev-refero"
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: "dev-refero.collaboo.co"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: proxy-backend
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: proxy-backend-dev-uxmove
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.priority: "10"
+    traefik.ingress.kubernetes.io/custom-request-headers.X-Target-Site: "dev-uxmovement"
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: "dev-uxmove.collaboo.co"
       http:
         paths:
           - path: /
